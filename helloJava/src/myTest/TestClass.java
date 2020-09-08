@@ -73,7 +73,7 @@ public class TestClass {
     }
 
     private void testFanXing() {
-        TestTClass<Integer> intCls = new TestTClass<>();
+        NumClass<Integer> intCls = new NumClass<>();
         intCls.setName(1);
         System.out.println(intCls.getName());
     }
@@ -116,17 +116,18 @@ public class TestClass {
 //        text += " world";
         System.out.printf("text:%s%n", text);
     }
+
+    private class NumClass<I extends Number> {
+
+        private I name;
+
+        public void setName(I name) {
+            this.name = name;
+        }
+
+        public I getName() {
+            return name;
+        }
+    }
 }
 
-class TestTClass<T> {
-
-    private T name;
-
-    void setName(T t) {
-        name = t;
-    }
-
-    T getName() {
-        return name;
-    }
-}
