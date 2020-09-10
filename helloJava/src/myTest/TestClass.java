@@ -1,5 +1,6 @@
 package myTest;
 
+import myAnnotation.CheckAnnotation;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -29,6 +30,20 @@ public class TestClass {
         testHashCode();
         //栈
         testStack();
+        //注解
+        testAnnotation();
+    }
+
+    private void testAnnotation() {
+        Student student = new Student();
+        student.Gender = "未知生物";
+        student.Name = "";
+        try {
+            boolean result = CheckAnnotation.check(student);
+            System.out.println(String.format("检查结果%s", result));
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     private void testStack() {
@@ -121,12 +136,12 @@ public class TestClass {
 
         private I name;
 
-        public void setName(I name) {
-            this.name = name;
-        }
-
         public I getName() {
             return name;
+        }
+
+        public void setName(I name) {
+            this.name = name;
         }
     }
 }
