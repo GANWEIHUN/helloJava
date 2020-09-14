@@ -7,9 +7,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 
 public class TestClass {
 
@@ -88,9 +90,27 @@ public class TestClass {
     }
 
     private void testFanXing() {
+        //泛型类
         NumClass<Integer> intCls = new NumClass<>();
         intCls.setName(1);
         System.out.println(intCls.getName());
+        //？ extends通配符修饰方法参数时
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        readOnlyNumber(list);
+
+
+    }
+
+    private void readOnlyNumber(List<? extends Integer> list) {
+        for (int i = 0; i < list.size(); i++) {
+            Integer n = list.get(i);
+            //？ extends通配符修饰方法参数时，只能只读方法，不能修改list
+            //list.set(0,10);
+            System.out.println(n);
+        }
     }
 
     private void testBitCalculate() {
@@ -144,5 +164,6 @@ public class TestClass {
             this.name = name;
         }
     }
+
 }
 
