@@ -37,6 +37,7 @@ public class TestClass {
     }
 
     private void testAnnotation() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
         Student student = new Student();
         student.Gender = "未知生物";
         student.Name = "";
@@ -49,7 +50,7 @@ public class TestClass {
     }
 
     private void testStack() {
-
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
         Deque<String> stack2 = new LinkedList<>();
         stack2.push("hello");
         stack2.push("haha");
@@ -61,6 +62,7 @@ public class TestClass {
     }
 
     private void testHashCode() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
         String a = String.valueOf(0);
         String b = String.valueOf(1);
         String c = "abc黑";
@@ -90,6 +92,7 @@ public class TestClass {
     }
 
     private void testFanXing() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
         //泛型类
         NumClass<Integer> intCls = new NumClass<>();
         intCls.setName(1);
@@ -114,6 +117,7 @@ public class TestClass {
     }
 
     private void testBitCalculate() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
         int a = 1 & 0;
         int b = 2 & 2;
         int c = 4 & 4;
@@ -128,6 +132,7 @@ public class TestClass {
     }
 
     private void testSecureRandom() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
         SecureRandom sr = null;
         try {
             sr = SecureRandom.getInstanceStrong(); // 获取高强度安全随机数生成器
@@ -140,6 +145,7 @@ public class TestClass {
     }
 
     private void testBigFloat() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
         BigDecimal bigDecimal = new BigDecimal(10);
         BigDecimal bigDecimal2 = new BigDecimal(3);
         BigDecimal div = bigDecimal.divide(bigDecimal2, 10, RoundingMode.HALF_UP);
@@ -147,6 +153,7 @@ public class TestClass {
     }
 
     private void testHello() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
         String text = "hello";
 //        text += " world";
         System.out.printf("text:%s%n", text);
