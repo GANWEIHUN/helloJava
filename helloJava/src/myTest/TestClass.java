@@ -34,6 +34,22 @@ public class TestClass {
         testStack();
         //注解
         testAnnotation();
+        //list列表转数组
+        testList();
+    }
+
+    private void testList() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(123);
+        list.add(29);
+        list.add(8);
+        Integer[] array = list.toArray(new Integer[list.size()]);
+        System.out.println(String.format("array:%s", array.length));
+        Integer[] array2 = new Integer[list.size()];
+        list.toArray(array2);
+        System.out.println(String.format("array2:%s", array2.length));
     }
 
     private void testAnnotation() {
