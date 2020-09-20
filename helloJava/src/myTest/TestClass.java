@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class TestClass {
 
@@ -36,6 +38,37 @@ public class TestClass {
         testAnnotation();
         //list列表转数组
         testList();
+        //创建stream方式一，传入 supplier。对比list存储大量数据占用内存，stream几乎不占用内存，以为你传入的supplier是一个算法，需要用到了数据在去算
+        testSupplierStream();
+        //stream映射为新的stream
+        testMapStream();
+    }
+
+    private void testMapStream() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Stream<Integer> integerStream = Stream.of(1, 2, 3);
+        Stream<Integer> integerStream1 = integerStream.map(n -> n * n);
+        integerStream1.forEach(System.out::println);
+    }
+
+    private <R> R abc(Integer integer) {
+        return null;
+    }
+
+    private void testSupplierStream() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Stream<Integer> integerStream = Stream.generate(new NumberSupplier());
+        integerStream.limit(5).forEach(System.out::println);
+    }
+
+    class NumberSupplier implements Supplier<Integer> {
+
+        private int number;
+
+        @Override
+        public Integer get() {
+            return ++number;
+        }
     }
 
     private void testList() {
