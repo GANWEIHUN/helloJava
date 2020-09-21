@@ -10,8 +10,10 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -42,6 +44,22 @@ public class TestClass {
         testSupplierStream();
         //stream映射为新的stream
         testMapStream();
+        //测试map的key，必须正确重写equals和hashCode
+        testMapKey();
+    }
+
+    private void testMapKey() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Map<String, Integer> integerMap = new HashMap<>();
+        String key1 = "a";
+        integerMap.put(key1, 123);
+        String key2 = new String("a");
+        //key1和key2不是同一个对象，但是key2依然能取到key1的value。那是因为map里面是通过key的hashCode确定value索引的。
+        System.out.println(String.format("key1=key2比较结果：%s", key1 == key2));
+        int value = integerMap.get(key2);
+        System.out.println(String.format("value:%s", value));
+        System.out.println(String.format("key1.equals(key2)比较结果：%s", key1.equals(key2)));
+        System.out.println(String.format("key1HashCode:%s key2HashCode:%s", key1.hashCode(), key2.hashCode()));
     }
 
     private void testMapStream() {
@@ -59,16 +77,6 @@ public class TestClass {
         System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
         Stream<Integer> integerStream = Stream.generate(new NumberSupplier());
         integerStream.limit(5).forEach(System.out::println);
-    }
-
-    class NumberSupplier implements Supplier<Integer> {
-
-        private int number;
-
-        @Override
-        public Integer get() {
-            return ++number;
-        }
     }
 
     private void testList() {
@@ -206,6 +214,16 @@ public class TestClass {
         String text = "hello";
 //        text += " world";
         System.out.printf("text:%s%n", text);
+    }
+
+    class NumberSupplier implements Supplier<Integer> {
+
+        private int number;
+
+        @Override
+        public Integer get() {
+            return ++number;
+        }
     }
 
     private class NumClass<I extends Number> {
