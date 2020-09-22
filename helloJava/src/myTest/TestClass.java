@@ -207,6 +207,11 @@ public class TestClass {
         BigDecimal bigDecimal2 = new BigDecimal(3);
         BigDecimal div = bigDecimal.divide(bigDecimal2, 10, RoundingMode.HALF_UP);
         System.out.println(String.format("div:%s", div));
+        //两个BigDecimal比较不能用equals，必须用compareTo
+        bigDecimal = new BigDecimal("1.2");
+        bigDecimal2 = new BigDecimal("1.20");
+        System.out.println(String.format("equals结果：%s", bigDecimal.equals(bigDecimal2)));
+        System.out.println(String.format("compareTo结果：%s", bigDecimal.compareTo(bigDecimal2)));
     }
 
     private void testHello() {
