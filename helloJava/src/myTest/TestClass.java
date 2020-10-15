@@ -2,6 +2,7 @@ package myTest;
 
 import myAnnotation.CheckAnnotation;
 import org.junit.Test;
+import sun.misc.VM;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -46,6 +47,15 @@ public class TestClass {
         testMapStream();
         //测试map的key，必须正确重写equals和hashCode
         testMapKey();
+        //测试Integer缓存大小
+        testIntegerCache();
+    }
+
+    private void testIntegerCache() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        //启动参数 -Djava.lang.Integer.IntegerCache.high=256
+        String high = VM.getSavedProperty("java.lang.Integer.IntegerCache.high");
+        System.out.println(String.format("IntegerCache.high：%s", high));
     }
 
     private void testMapKey() {
