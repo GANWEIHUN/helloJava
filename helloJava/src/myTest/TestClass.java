@@ -49,6 +49,15 @@ public class TestClass {
         testMapKey();
         //测试Integer缓存大小
         testIntegerCache();
+        //测试单列
+        testSingleton();
+    }
+
+    private void testSingleton() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        System.out.println(Singleton.class);
+        Singleton singleton = Singleton.getInstance();
+        System.out.println(singleton);
     }
 
     private void testIntegerCache() {
