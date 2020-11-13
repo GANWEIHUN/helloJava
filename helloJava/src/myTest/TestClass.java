@@ -51,6 +51,42 @@ public class TestClass {
         testIntegerCache();
         //测试单列
         testSingleton();
+        //适配器
+        testAdapter();
+        //组合
+        testComposite();
+        //装饰器
+        testDecorator();
+    }
+
+    private void testDecorator() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        //原理：持有核心类/接口，在核心类上面增加附加功能
+        TextLabel textLabel = new SpanLabel();
+        textLabel.setText("你好");
+        //文本加粗装饰
+        LabelDecorator nodeDecorator = new BoldDecorator(textLabel);
+        System.out.println(textLabel.getText());
+        System.out.println(nodeDecorator.getText());
+    }
+
+    private void testComposite() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        //原理：功能拆分一个个类，然后组合实现一个大的功能. 类似一棵树部分-整体的层次结构
+        ElementNode root = new ElementNode("school");
+        root.add(new ElementNode("1班").add(new TextNode("张三")).add(new TextNode("王五")));
+        root.add(new ElementNode("2班").add(new TextNode("jack")).add(new TextNode("tomato")).add(new CommentNode("注释")).add(new TextNode("窃格瓦拉")));
+        System.out.println(root.toXml());
+    }
+
+    private void testAdapter() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        //原理：接口B持有接口A，B里面实现A的接口。A和B都是抽象接口
+        Calculator calculator = new Calculator(100);
+        //Thread thread = new Thread(calculator);//编译报错
+        RunnableAdapter runnableAdapter = new RunnableAdapter(calculator);
+        Thread thread = new Thread(runnableAdapter);//Runnable适配器
+        thread.start();
     }
 
     private void testSingleton() {
