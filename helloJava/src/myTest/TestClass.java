@@ -1,5 +1,6 @@
 package myTest;
 
+import com.sun.org.apache.regexp.internal.REUtil;
 import myAnnotation.CheckAnnotation;
 import org.junit.Test;
 import sun.misc.VM;
@@ -57,6 +58,45 @@ public class TestClass {
         testComposite();
         //装饰器
         testDecorator();
+        //工厂
+        testFactory();
+        //责任链
+        testChain();
+        //迭代器
+        testIterator();
+    }
+
+    private void testIterator() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        //自定义迭代器
+        ReverseArray<Integer> array = new ReverseArray<>(1, 2, 3, 4, 5);
+        for (Integer integer : array) {
+            System.out.println(integer);
+        }
+    }
+
+    private void testChain() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        //责任链，一个请求在责任链流转。某个环节处理不符合要求，终止责任链流转或者继续流转。根据具体需求而定
+        Request request = new Request("小明", new BigDecimal(1090));
+        HandlerChain handlerChain = new HandlerChain(request);
+        DirectorHandler directorHandler = new DirectorHandler();
+        handlerChain.add(directorHandler);
+        handlerChain.add(new ManagerHandler());
+        handlerChain.process();
+
+        handlerChain.setRequest(new Request("张三", new BigDecimal(1080)));
+        handlerChain.process();
+
+    }
+
+    private void testFactory() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        //一个工厂应该提供工厂接口和产品接口
+        NumberFactory numberFactory = NumberFactory.getFactory();
+        java.lang.Number number = numberFactory.parse("209");
+        System.out.println("number:" + number.toString());
+
     }
 
     private void testDecorator() {
