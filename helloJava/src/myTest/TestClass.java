@@ -1,6 +1,5 @@
 package myTest;
 
-import com.sun.org.apache.regexp.internal.REUtil;
 import myAnnotation.CheckAnnotation;
 import org.junit.Test;
 import sun.misc.VM;
@@ -9,13 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -140,7 +133,7 @@ public class TestClass {
         System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
         //启动参数 -Djava.lang.Integer.IntegerCache.high=256
         String high = VM.getSavedProperty("java.lang.Integer.IntegerCache.high");
-        System.out.println(String.format("IntegerCache.high：%s", high));
+        System.out.printf("IntegerCache.high：%s%n", high);
     }
 
     private void testMapKey() {
@@ -148,13 +141,13 @@ public class TestClass {
         Map<String, Integer> integerMap = new HashMap<>();
         String key1 = "a";
         integerMap.put(key1, 123);
-        String key2 = new String("a");
+        String key2 = "a";
         //key1和key2不是同一个对象，但是key2依然能取到key1的value。那是因为map里面是通过key的hashCode确定value索引的。
-        System.out.println(String.format("key1=key2比较结果：%s", key1 == key2));
+        System.out.printf("key1=key2比较结果：%s%n", key1 == key2);
         int value = integerMap.get(key2);
-        System.out.println(String.format("value:%s", value));
-        System.out.println(String.format("key1.equals(key2)比较结果：%s", key1.equals(key2)));
-        System.out.println(String.format("key1HashCode:%s key2HashCode:%s", key1.hashCode(), key2.hashCode()));
+        System.out.printf("value:%s%n", value);
+        System.out.printf("key1.equals(key2)比较结果：%s%n", key1.equals(key2));
+        System.out.printf("key1HashCode:%s key2HashCode:%s%n", key1.hashCode(), key2.hashCode());
     }
 
     private void testMapStream() {
@@ -182,10 +175,10 @@ public class TestClass {
         list.add(29);
         list.add(8);
         Integer[] array = list.toArray(new Integer[list.size()]);
-        System.out.println(String.format("array:%s", array.length));
+        System.out.printf("array:%s%n", array.length);
         Integer[] array2 = new Integer[list.size()];
         list.toArray(array2);
-        System.out.println(String.format("array2:%s", array2.length));
+        System.out.printf("array2:%s%n", array2.length);
     }
 
     private void testAnnotation() {
@@ -195,7 +188,7 @@ public class TestClass {
         student.Name = "";
         try {
             boolean result = CheckAnnotation.check(student);
-            System.out.println(String.format("检查结果%s", result));
+            System.out.printf("检查结果%s%n", result);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -301,12 +294,12 @@ public class TestClass {
         BigDecimal bigDecimal = new BigDecimal(10);
         BigDecimal bigDecimal2 = new BigDecimal(3);
         BigDecimal div = bigDecimal.divide(bigDecimal2, 10, RoundingMode.HALF_UP);
-        System.out.println(String.format("div:%s", div));
+        System.out.printf("div:%s%n", div);
         //两个BigDecimal比较不能用equals，必须用compareTo
         bigDecimal = new BigDecimal("1.2");
         bigDecimal2 = new BigDecimal("1.20");
-        System.out.println(String.format("equals结果：%s", bigDecimal.equals(bigDecimal2)));
-        System.out.println(String.format("compareTo结果：%s", bigDecimal.compareTo(bigDecimal2)));
+        System.out.printf("equals结果：%s%n", bigDecimal.equals(bigDecimal2));
+        System.out.printf("compareTo结果：%s%n", bigDecimal.compareTo(bigDecimal2));
     }
 
     private void testHello() {
