@@ -57,6 +57,25 @@ public class TestClass {
         testChain();
         //迭代器
         testIterator();
+        //策略
+        testStrategy();
+    }
+
+    private void testStrategy() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        //策略思想，主流算法不变，其中容易变化的部分抽出来以参数的形式传进去，使得主体算法不用改变。
+        DiscountContext discountContext = new DiscountContext();
+        discountContext.setDiscountStrategy(new UserDiscountStrategy());
+        BigDecimal pay1 = discountContext.calculateDiscount(BigDecimal.valueOf(105));
+        System.out.println("pay1:" + pay1);
+
+        discountContext.setDiscountStrategy(new OverDiscountStrategy());
+        BigDecimal pay2 = discountContext.calculateDiscount(BigDecimal.valueOf(105));
+        System.out.println("pay2:" + pay2);
+
+        discountContext.setDiscountStrategy(new PrimeDiscountStrategy());
+        BigDecimal pay3 = discountContext.calculateDiscount(BigDecimal.valueOf(105));
+        System.out.println("pay3:" + pay3);
     }
 
     private void testIterator() {
