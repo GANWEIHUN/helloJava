@@ -59,6 +59,15 @@ public class TestClass {
         testIterator();
         //策略
         testStrategy();
+        //建造者
+        testBuilder();
+    }
+
+    private void testBuilder() {
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        //建造者模式，创建一个完整对象由多个部件组成。参考stringBuilder链式代码stringBuilder.append().append().append()
+        MyCar myCar = new MyCar();
+        myCar.setTyre(new RubberTyre()).setDriveMode(new AutoMode()).setEngine(new InhaleEngine()).setEnginePosition(new FrontPosition()).run();
     }
 
     private void testStrategy() {
