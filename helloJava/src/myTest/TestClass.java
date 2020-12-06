@@ -4,6 +4,7 @@ import myAnnotation.CheckAnnotation;
 import org.junit.Test;
 import sun.misc.VM;
 
+import javax.swing.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.NoSuchAlgorithmException;
@@ -15,7 +16,7 @@ import java.util.stream.Stream;
 public class TestClass {
 
     @Test
-    public void myTest() {
+    public void myTest() throws InterruptedException {
 
         //hello world
         testHello();
@@ -63,6 +64,48 @@ public class TestClass {
         testBuilder();
         //多线程
         testThreads();
+        //任务队列
+        testTaskQueue();
+    }
+
+    private void testTaskQueue() throws InterruptedException {
+        //任务队列，通过wait和notify多线程协同工作
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        TaskQueue taskQueue = new TaskQueue();
+        List<Thread> threads = new ArrayList<>();
+        Thread thread = new Thread(() -> {
+            while (true) {
+                try {
+                    String task = taskQueue.get();
+                    System.out.println("getTask:" + task);
+                } catch (InterruptedException exception) {
+//                        exception.printStackTrace();
+                    System.out.println("任务完成");
+                    break;
+                }
+            }
+        });
+        thread.start();
+        threads.add(thread);
+        Thread addThread = new Thread(() -> {
+            for (int i = 0; i < 8; i++) {
+                String task = "task" + i;
+                taskQueue.add(task);
+                System.out.println("addTask:" + task);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+        addThread.start();
+        addThread.join();
+        System.out.println("任务添加完成");
+        Thread.sleep(1000);
+        for (Thread t : threads) {
+            t.interrupt();
+        }
     }
 
     private void testThreads() {
@@ -189,7 +232,7 @@ public class TestClass {
         integerMap.put(key1, 123);
         String key2 = "a";
         //key1和key2不是同一个对象，但是key2依然能取到key1的value。那是因为map里面是通过key的hashCode确定value索引的。
-        System.out.printf("key1=key2比较结果：%s%n", key1 == key2);
+        System.out.printf("key1=key2比较结果：%s%n", key1.equals(key2));
         int value = integerMap.get(key2);
         System.out.printf("value:%s%n", value);
         System.out.printf("key1.equals(key2)比较结果：%s%n", key1.equals(key2));
