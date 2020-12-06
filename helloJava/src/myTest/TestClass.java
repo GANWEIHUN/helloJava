@@ -35,7 +35,7 @@ public class TestClass {
         testAnnotation();
         //list列表转数组
         testList();
-        //创建stream方式一，传入 supplier。对比list存储大量数据占用内存，stream几乎不占用内存，以为你传入的supplier是一个算法，需要用到了数据在去算
+        //创建stream方式一，传入 supplier。对比list存储大量数据占用内存，stream几乎不占用内存，认为你传入的supplier是一个算法，需要用到了数据在去算
         testSupplierStream();
         //stream映射为新的stream
         testMapStream();
@@ -61,6 +61,24 @@ public class TestClass {
         testStrategy();
         //建造者
         testBuilder();
+        //多线程
+        testThreads();
+    }
+
+    private void testThreads() {
+        //多线程同时读写共享变量，需通过synchronized进行加锁
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        AddThread addThread = new AddThread();
+        DecreaseThread decreaseThread = new DecreaseThread();
+        addThread.start();
+        decreaseThread.start();
+        try {
+            addThread.join();
+            decreaseThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("count:" + Counter.num);
     }
 
     private void testBuilder() {
