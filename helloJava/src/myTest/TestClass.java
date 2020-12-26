@@ -71,15 +71,18 @@ public class TestClass {
     private void testTaskQueue() throws InterruptedException {
         //任务队列，通过wait和notify多线程协同工作
         System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
-        TaskQueue taskQueue = new TaskQueue();
+        //传统方式，synchronized配合wait和notify多线程协同工作
+        //TaskQueue taskQueue = new TaskQueue();
+        //新方式，reentrantLock配合condition多线程协同工作，新方式更灵活
+        TaskQueue2 taskQueue2 = new TaskQueue2();
         List<Thread> threads = new ArrayList<>();
         Thread thread = new Thread(() -> {
             while (true) {
                 try {
-                    String task = taskQueue.get();
+                    String task = taskQueue2.get();
                     System.out.println("getTask:" + task);
                 } catch (InterruptedException exception) {
-//                        exception.printStackTrace();
+                    //exception.printStackTrace();
                     System.out.println("任务完成");
                     break;
                 }
@@ -90,7 +93,7 @@ public class TestClass {
         Thread addThread = new Thread(() -> {
             for (int i = 0; i < 8; i++) {
                 String task = "task" + i;
-                taskQueue.add(task);
+                taskQueue2.add(task);
                 System.out.println("addTask:" + task);
                 try {
                     Thread.sleep(1000);
