@@ -10,6 +10,7 @@ import java.math.RoundingMode;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.*;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -66,6 +67,48 @@ public class TestClass {
         testThreads();
         //任务队列
         testTaskQueue();
+        //fork/join线程池
+        testForkJoin();
+        //线程局部变量
+        testThreadLocal();
+    }
+
+    private void testThreadLocal() {
+        //这种在一个线程中，横跨若干方法调用，需要传递的对象，我们通常称之为上下文（Context），它是一种状态，可以是用户身份、任务信息等。
+        //给每个方法增加一个context参数非常麻烦，而且有些时候，如果调用链有无法修改源码的第三方库，User对象就传不进去了。
+        //Java标准库提供了一个特殊的ThreadLocal，它可以在一个线程中传递同一个对象。
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        UserContext.User user = new UserContext.User();
+        user.setName("tomato");
+        user.setGender("男");
+        user.setAge(19);
+        try (UserContext context = new UserContext(user)) {
+            printName();
+            printAage();
+        }
+    }
+
+    private void printAage() {
+        UserContext.User user = UserContext.getCurrentUser();
+        System.out.println("age:" + user.getAge());
+    }
+
+    private void printName() {
+        UserContext.User user = UserContext.getCurrentUser();
+        System.out.println("name:" + user.getName());
+    }
+
+    private void testForkJoin() {
+        //fork/join线程池，基于“分治”原理，把一个大任务分成多个小任务并发处理
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Random random = new Random(0);
+        long[] array = new long[2000];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = random.nextInt(10000);
+        }
+        SumTask sumTask = new SumTask(array, 0, array.length);
+        long result = ForkJoinPool.commonPool().invoke(sumTask);
+        System.out.println("result:" + result);
     }
 
     private void testTaskQueue() throws InterruptedException {
